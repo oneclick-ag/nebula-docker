@@ -1,12 +1,12 @@
 # nebula
 
-<span style="display:block;text-align:center">[![GitHub](https://img.shields.io/static/v1.svg?color=db422a&logoColor=2a6bdb&style=for-the-badge&label=buildsociety&message=GitHub&logo=github)](https://github.com/buildsociety "view the source for all of our repositories.")</span>
+<span style="display:block;text-align:center">[![GitHub](https://img.shields.io/static/v1.svg?color=db422a&logoColor=2a6bdb&style=for-the-badge&label=oneclick-ag&message=GitHub&logo=github)](https://github.com/oneclick-ag "view the source for all of our repositories.")</span>
 
-![GitHub Workflow Status](https://img.shields.io/github/workflow/status/buildsociety/nebula/build?color=db422a&logoColor=FFFFFF&style=for-the-badge)
-![Docker Pulls](https://img.shields.io/docker/pulls/buildsociety/nebula?color=db422a&logoColor=2a6bdb&style=for-the-badge)
-![Docker Image Size (latest by date)](https://img.shields.io/docker/image-size/buildsociety/nebula?color=db422a&logoColor=2a6bdb&style=for-the-badge)
-![Docker Stars](https://img.shields.io/docker/stars/buildsociety/nebula?color=db422a&logoColor=2a6bdb&style=for-the-badge)
-![Docker Image Version (latest by date)](https://img.shields.io/docker/v/buildsociety/nebula?color=db422a&logoColor=2a6bdb&style=for-the-badge)
+![GitHub Workflow Status](https://img.shields.io/github/workflow/status/oneclick-ag/nebula-docker/build?color=db422a&logoColor=FFFFFF&style=for-the-badge)
+![Docker Pulls](https://img.shields.io/docker/pulls/ocdev/nebula?color=db422a&logoColor=2a6bdb&style=for-the-badge)
+![Docker Image Size (latest by date)](https://img.shields.io/docker/image-size/ocdev/nebula?color=db422a&logoColor=2a6bdb&style=for-the-badge)
+![Docker Stars](https://img.shields.io/docker/stars/ocdev/nebula?color=db422a&logoColor=2a6bdb&style=for-the-badge)
+![Docker Image Version (latest by date)](https://img.shields.io/docker/v/ocdev/nebula?color=db422a&logoColor=2a6bdb&style=for-the-badge)
 
 [Nebula](https://github.com/slackhq/nebula) is a scalable overlay networking
 tool with a focus on performance, simplicity and security. It lets you
@@ -21,7 +21,7 @@ Our images support multiple architectures such as x86-64, arm64 and armhf. We
 utilise the docker manifest for multi-platform awareness. More information is
 available from docker [here](https://github.com/docker/distribution/blob/master/docs/spec/manifest-v2-2.md#manifest-list).
 
-Simply pulling [buildsociety/nebula](https://github.com/buildsociety/nebula)
+Simply pulling [ocdev/nebula](https://github.com/oneclick-ag/nebula-docker)
 should retrieve the correct image for your arch.
 
 ## Version Tags
@@ -30,11 +30,11 @@ This image provides various versions that are available via tags. `latest` tag
 usually provides the latest stable version. Others are considered under
 development and caution must be exercised when using them.
 
-| Tag | Description |
-| :----: | --- |
+| Tag    | Description            |
+| :----: | ---                    |
 | latest | Stable Nebula Releases |
-| edge | Latest Nebula Releases |
-| v1.2.0 | Nebula 1.2.0 Release |
+| edge   | Latest Nebula Releases |
+| v1.6.0 | Nebula 1.6.0 Release   |
 
 ## Usage
 
@@ -43,17 +43,17 @@ Here are some example snippets to help you get started creating a container.
 ### docker
 
 ```bash
-docker pull buildsociety/nebula:latest
+docker pull ocdev/nebula:latest
 ```
 
 and
 ```bash
-docker run -td --cap-add=NET_ADMIN --device=/dev/net/tun -v /path/to/config:/config --name nebula buildsociety/nebula:latest
+docker run -td --cap-add=NET_ADMIN --device=/dev/net/tun -v /path/to/config:/config --name nebula ocdev/nebula:latest
 ```
 
 or as a privileged container:
 ```bash
-docker run -td --privileged -v /path/to/config:/config --name nebula buildsociety/nebula:latest
+docker run -td --privileged -v /path/to/config:/config --name nebula ocdev/nebula:latest
 ```
 
 User documentation for Nebula can be found at
@@ -111,7 +111,7 @@ spec:
       containers:
         - name: ...
         - name: nebula
-          image: buildsociety/nebula:v1.2.0
+          image: ocdev/nebula:v1.2.0
           securityContext:
             capabilities:
               add:
@@ -155,7 +155,7 @@ spec:
       containers:
         - name: ...
         - name: nebula
-          image: buildsociety/nebula:v1.2.0
+          image: ocdev/nebula:v1.2.0
           securityContext:
             privileged: true
           volumeMounts:
@@ -180,8 +180,8 @@ those above). These parameters are separated by a colon and indicate
 port `80` from inside the container to be accessible from the host's IP on port
 `8080` outside the container.
 
-| Parameter | Function |
-| :----: | --- |
+| Parameter    | Function                        |
+| :----:       | ---                             |
 | `-v /config` | Nebula configuration directory. |
 
 ## Support Info
@@ -191,7 +191,7 @@ port `80` from inside the container to be accessible from the host's IP on port
 * container version number
   * `docker inspect -f '{{ index .Config.Labels "build_version" }}' nebula`
 * image version number
-  * `docker inspect -f '{{ index .Config.Labels "build_version" }}' buildsociety/nebula`
+  * `docker inspect -f '{{ index .Config.Labels "build_version" }}' ocdev/nebula`
 
 ## Updating Info
 
