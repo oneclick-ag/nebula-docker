@@ -6,26 +6,16 @@ ARG TARGETPLATFORM
 ARG BUILDPLATFORM
 ################################################################################
 
-RUN printf "%s\n" "I am running on ${BUILDPLATFORM:-linux/amd64},\
-building for ${TARGETPLATFORM:-linux/amd64}" "$(uname -a)" \
+RUN printf "%s\n" "I am running on ${BUILDPLATFORM:-linux/amd64},building for ${TARGETPLATFORM:-linux/amd64}" "$(uname -a)"\
     && apk --update --no-cache add build-base git\
     && rm -rf /tmp/* /var/cache/apk/*\
-    && git -c advice.detachedHead=false clone --branch ${VERSION}\
-    https://github.com/slackhq/nebula /go/src/github.com/slackhq/nebula\
+    && git -c advice.detachedHead=false clone --branch ${VERSION} https://github.com/slackhq/nebula /go/src/github.com/slackhq/nebula\
     && cd /go/src/github.com/slackhq/nebula\
-    && make BUILD_NUMBER="${VERSION#v}"\
-    build/$(echo ${TARGETPLATFORM:-linux/amd64} | sed -e "s/\/v/-/g"\
-    -e "s/\//-/g")/nebula\
-    && make BUILD_NUMBER="${VERSION#v}"\
-    build/$(echo ${TARGETPLATFORM:-linux/amd64} | sed -e "s/\/v/-/g"\
-    -e "s/\//-/g")/nebula-cert\
+    && make BUILD_NUMBER="${VERSION#v}" build/$(echo ${TARGETPLATFORM:-linux/amd64} | sed -e "s/\/v/-/g" -e "s/\//-/g")/nebula\
+    && make BUILD_NUMBER="${VERSION#v}" build/$(echo ${TARGETPLATFORM:-linux/amd64} | sed -e "s/\/v/-/g" -e "s/\//-/g")/nebula-cert\
     && mkdir -p /go/build/${TARGETPLATFORM:-linux/amd64} \
-    && mv /go/src/github.com/slackhq/nebula/build/\
-    $(echo ${TARGETPLATFORM:-linux/amd64} | sed -e "s/\/v/-/g"\
-    -e "s/\//-/g")/nebula /go/build/${TARGETPLATFORM:-linux/amd64}/\
-    && mv /go/src/github.com/slackhq/nebula/build/\
-    $(echo ${TARGETPLATFORM:-linux/amd64} | sed -e "s/\/v/-/g"\
-    -e "s/\//-/g")/nebula-cert /go/build/${TARGETPLATFORM:-linux/amd64}/
+    && mv /go/src/github.com/slackhq/nebula/build/$(echo ${TARGETPLATFORM:-linux/amd64} | sed -e "s/\/v/-/g" -e "s/\//-/g")/nebula /go/build/${TARGETPLATFORM:-linux/amd64}/\
+    && mv /go/src/github.com/slackhq/nebula/build/$(echo ${TARGETPLATFORM:-linux/amd64} | sed -e "s/\/v/-/g" -e "s/\//-/g")/nebula-cert /go/build/${TARGETPLATFORM:-linux/amd64}/
 
 ################################################################################
 FROM --platform=${TARGETPLATFORM:-linux/amd64} alpine:latest
