@@ -37,12 +37,11 @@ jobs:
           echo "version=${VERSION}" >> $GITHUB_OUTPUT
           echo "docker_platforms=${DOCKER_PLATFORMS}" >> $GITHUB_OUTPUT
 
-          BUILDX_ARGS=$( \
-            echo VERSION=${VERSION}; \
-            echo BUILD_DATE=$(date -u +'%Y-%m-%dT%H:%M:%SZ'); \
-            echo VCS_REF=${GITHUB_SHA::8})
-          BUILDX_ARGS="${BUILDX_ARGS//$'\n'/'%0A'}"
-          echo "buildx_args=${BUILDX_ARGS}" >> $GITHUB_OUTPUT
+          BUILD_DATE=$(date -u +'%Y-%m-%dT%H:%M:%SZ')
+          VCS_REF=${GITHUB_SHA::8})
+
+          echo "build_date=${BUILD_DATE}" >> $GITHUB_OUTPUT
+          echo "vcs_ref=${VCS_REF}" >> $GITHUB_OUTPUT
           echo "tags=${TAGS}" >> $GITHUB_OUTPUT
       -
         name: Set up QEMU
@@ -58,7 +57,10 @@ jobs:
         uses: docker/build-push-action@v4.1.1
         with:
           file: Dockerfile
-          build-args: ${{ steps.prepare.outputs.buildx_args }}
+          build-args: |
+            VERSION=${{ steps.prepare.outputs.version }}
+            BUILD_DATE=${{ steps.prepare.outputs.build_date }}
+            VCS_REF=${{ steps.prepare.outputs.vcs_ref }}
           context: .
           push: false
           platforms: ${{ steps.prepare.outputs.docker_platforms }}
@@ -76,7 +78,10 @@ jobs:
         uses: docker/build-push-action@v4.1.1
         with:
           file: Dockerfile
-          build-args: ${{ steps.prepare.outputs.buildx_args }}
+          build-args: |
+            VERSION=${{ steps.prepare.outputs.version }}
+            BUILD_DATE=${{ steps.prepare.outputs.build_date }}
+            VCS_REF=${{ steps.prepare.outputs.vcs_ref }}
           context: .
           push: true
           platforms: ${{ steps.prepare.outputs.docker_platforms }}
